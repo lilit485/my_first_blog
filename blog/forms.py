@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 
+
 # Create your forms here.
 
 class PostForm(UserCreationForm):
@@ -19,3 +20,16 @@ class PostForm(UserCreationForm):
 		if commit:
 			user.save()
 		return user
+
+
+
+
+
+
+class PostForm1(UserCreationForm):
+
+		class Meta1:
+			model= User
+			fields=("login","password")
+
+

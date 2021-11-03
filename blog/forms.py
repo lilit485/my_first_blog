@@ -1,7 +1,8 @@
 from django import forms
 from .models import Post
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView
 
 
 
@@ -21,15 +22,14 @@ class PostForm(UserCreationForm):
 			user.save()
 		return user
 
-
-
-
-
-
 class PostForm1(UserCreationForm):
+	model = User
+	fields = ("username","password")
 
-		class Meta1:
-			model= User
-			fields=("login","password")
+class PostForm2(forms.ModelForm):
+
+    class Meta:
+        model = Post
+        fields = ('title', 'text',)
 
 

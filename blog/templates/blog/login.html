@@ -5,15 +5,13 @@
 
 <!--Login-->
 <div class="container py-5">
-<center>
-<form method="POST" style="border: 1px solid black; margin: 4%; padding:10%; border-radius:1%;">
-    <fieldset class="form-group">
-  <h1>Log in</h1>
-      {% csrf_token %}
-    {{ login_form|crispy }}
-    <button class="btn btn-primary" type="submit">Log in</button>
-</form>
-</center>
+   <h1>Log in</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ login_form|crispy }}
+        <button class="btn btn-primary" type="submit">Log in</button>
+   </form>
+
   <p class="text-center">Don't have an account? <a href="/register">Create an account</a>.</p>
 </div>
 

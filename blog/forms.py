@@ -1,8 +1,11 @@
 from django import forms
+from django.forms import ModelForm
+
 from .models import Post
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
+from django.forms import CharField, Form, PasswordInput
 
 
 
@@ -23,8 +26,12 @@ class PostForm(UserCreationForm):
 		return user
 
 class PostForm1(UserCreationForm):
-	model = User
-	fields = ("username","password")
+	class Meta:
+		model=User
+		fields = ("username", "password")
+
+
+
 
 class PostForm2(forms.ModelForm):
 

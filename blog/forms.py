@@ -8,35 +8,28 @@ from django.contrib.auth.views import LoginView
 from django.forms import CharField, Form, PasswordInput
 
 
-
 # Create your forms here.
 
-class PostForm(UserCreationForm):
-	email = forms.EmailField(required=True)
+class RegisterForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ("username", "email", "password1", "password2")
 
-	class Meta:
-		model = User
-		fields = ("username", "email", "password1", "password2")
-
-	def save(self, commit=True):
-		user = super(PostForm, self).save(commit=False)
-		user.email = self.cleaned_data['email']
-		if commit:
-			user.save()
-		return user
-
-class PostForm1(UserCreationForm):
-	class Meta:
-		model=User
-		fields = ("username", "password")
+    def save(self, commit=True):
+        user = super(RegisterForm, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user
 
 
+class LoginForm(AuthenticationForm):
+    class Meta:
+        model = User
+        fields = ("username", "password")
 
 
-class PostForm2(forms.ModelForm):
-
+class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ('title', 'text',)
-
-

@@ -1,6 +1,7 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
+    {% if user.is_authenticated %}
     {% for post in posts %}
         <article class="post">
             <time class="date">
@@ -10,4 +11,8 @@
             <p>{{ post.text|linebreaksbr }}</p>
         </article>
     {% endfor %}
+    {% else %}
+        <div class="sign__in">Please Log in</div>
+
+    {% endif %}
 {% endblock %}

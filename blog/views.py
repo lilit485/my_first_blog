@@ -25,7 +25,7 @@ def post_new(request):
             post.author = request.user
             post.published_date = timezone.now()
             post.save()
-            return redirect('post_detail', pk=post.pk)
+            return redirect('post_new')
     else:
         form = PostForm()
     return render(request, 'blog/post_edit.html', {'form': form})
@@ -93,9 +93,6 @@ def login_request(request):
 
 
 def logout_request(request):
-	logout(request)
-	messages.info(request, "You have successfully logged out.")
-	return redirect("post_list")
-
-
-
+    logout(request)
+    messages.info(request, "You have successfully logged out.")
+    return redirect("post_list")

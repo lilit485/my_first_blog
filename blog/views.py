@@ -10,10 +10,12 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 
 
 def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-created_date')
+
     return re(request, 'blog/post_list.html', {'posts': posts})
 
 
@@ -25,7 +27,7 @@ def post_new(request):
             post.author = request.user
             post.published_date = timezone.now()
             post.save()
-            return redirect('post_new')
+            return redirect('post_list')
     else:
         form = PostForm()
     return render(request, 'blog/post_edit.html', {'form': form})
@@ -96,3 +98,9 @@ def logout_request(request):
     logout(request)
     messages.info(request, "You have successfully logged out.")
     return redirect("post_list")
+
+
+def delete_post(request, post_id=None):
+    post_to_delete = Post.objects.get(id=post_id)
+    post_to_delete.delete()
+    return post_new()  # name of the view function that returns your posts page)

@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
 
-
 urlpatterns = [
     path('', views.post_list, name='post_list'),
     path('post/new1/', views.post_new1, name='post_new1'),
@@ -9,9 +8,7 @@ urlpatterns = [
     path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
     path("register", views.register_request, name="register"),
     path("login", views.login_request, name="login"),
-    path("logout",views.logout_request, name="logout"),
-
-
-
+    path("logout", views.logout_request, name="logout"),
+    path('delete/<post_id>', views.delete_post, name='delete')
 
 ]

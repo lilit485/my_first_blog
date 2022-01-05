@@ -9,6 +9,6 @@ urlpatterns = [
     path("register", views.register_request, name="register"),
     path("login", views.login_request, name="login"),
     path("logout", views.logout_request, name="logout"),
-    path('delete/<post_id>', views.delete_post, name='delete')
+    path('post/<pk>/remove/', views.post_remove, name='post_remove'),
 
 ]

@@ -100,7 +100,9 @@ def logout_request(request):
     return redirect("post_list")
 
 
-def delete_post(request, post_id=None):
-    post_to_delete = Post.objects.get(id=post_id)
-    post_to_delete.delete()
-    return post_new()  # name of the view function that returns your posts page)
+def post_remove(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    post.delete()
+    return redirect('post_list')
+
+

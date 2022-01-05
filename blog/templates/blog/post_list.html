@@ -3,13 +3,16 @@
 {% block content %}
     {% if user.is_authenticated %}
         {% for post in posts %}
+
             <article class="post">
                 <time class="date">
                     {{ post.published_date }}
                     <h5><a href="">{{ post.author }}</a></h5>
+                  <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}">Delete</a>
                 </time>
                 <h2><a href="">{{ post.title }}</a></h2>
                 <p>{{ post.text|linebreaksbr }}</p>
+
 
             </article>
         {% endfor %}
@@ -18,3 +21,4 @@
 
     {% endif %}
 {% endblock %}
+

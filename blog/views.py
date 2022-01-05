@@ -105,3 +105,7 @@ def post_remove(request, pk):
     if request.user ==post.author:
        post.delete()
        return redirect('post_list')
+    else:
+
+       return  redirect('post_list')
+

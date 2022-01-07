@@ -28,23 +28,21 @@ def post_new(request):
             post.published_date = timezone.now()
             post.save()
             return redirect('post_list')
+
     else:
         form = PostForm()
     return render(request, 'blog/post_edit.html', {'form': form})
 
 
-def post_new1(request):
-    if request.method == "POST":
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.published_date = timezone.now()
-            post.save()
-            return redirect('post_detail', pk=post.pk)
+
+def post(requst, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if requst.user == post.author:
+        return redirect("post_edit",pk)
     else:
-        form = PostForm()
-    return render(request, 'blog/login.html', {'form': form})
+        return redirect("post_list")
+
+
 
 
 def post_edit(request, pk):
@@ -57,8 +55,11 @@ def post_edit(request, pk):
             post.published_date = timezone.now()
             post.save()
             return redirect('post_detail', pk=post.pk)
+
+
     else:
         form = PostForm(instance=post)
+
     return render(request, 'blog/post_edit.html', {'form': form})
 
 
@@ -102,10 +103,11 @@ def logout_request(request):
 
 def post_remove(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    if request.user ==post.author:
-       post.delete()
-       return redirect('post_list')
+    if request.user == post.author:
+
+        post.delete()
+        return redirect('post_list')
+
     else:
 
-       return  redirect('post_list')
-
+        return redirect('post_list')

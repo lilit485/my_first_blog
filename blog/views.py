@@ -34,15 +34,25 @@ def post_new(request):
     return render(request, 'blog/post_edit.html', {'form': form})
 
 
-
-def post(requst, pk):
-    post = get_object_or_404(Post, pk=pk)
-    if requst.user == post.author:
-        return redirect("post_edit",pk)
+def post_t(request, id):
+    post = get_object_or_404(Post, id=id)
+    if request.user == post.author:
+        return redirect("post_edit")
     else:
-        return redirect("post_list")
+        return redirect("post_list" )
 
 
+def post_user(request, id):
+    post = get_object_or_404(Post,id=id )
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        form = PostForm()
+    if request.user == post.author:
+        form = PostForm()
+        return render(request, 'blog/post_user.html', {'form': form})
+
+    else:
+        return redirect('post_list')
 
 
 def post_edit(request, pk):
@@ -101,12 +111,12 @@ def logout_request(request):
     return redirect("post_list")
 
 
-def post_remove(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+def post_remove(request, id):
+    post = get_object_or_404(Post, id=id)
     if request.user == post.author:
 
         post.delete()
-        return redirect('post_list')
+        return redirect('post_list',id)
 
     else:
 

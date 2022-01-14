@@ -1,5 +1,4 @@
 {% extends 'blog/base.html' %}
-
 {% block content %}
     {% if user.is_authenticated %}
         {% for post in posts %}
@@ -9,9 +8,8 @@
                     {{ post.published_date }}
                     <h5>User:<a href="">{{ post.author }}</a></h5>
 
-
                 </time>
-                <h2><a href="{% url 'post_user' id=post.id%}">{{ post.title }}</a></h2>
+                <h2><a href="{% url 'post_view' pk=post.pk %}">{{ post.title }}</a></h2>
                 <p>{{ post.text|linebreaksbr }}</p>
 
 

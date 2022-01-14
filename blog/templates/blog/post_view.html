@@ -1,0 +1,12 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+
+    <h5>User:<a href="">{{ post.author }}</a></h5>
+    <h2><a href="">{{ post.title }}</a></h2>
+    <p>{{ post.text|linebreaksbr }}</p>
+    {% if is_owner %}
+        <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}">Edit</a>
+        <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}">Delete</a>
+    {% endif %}
+
+{% endblock %}

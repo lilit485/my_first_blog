@@ -8,14 +8,11 @@ from django.shortcuts import redirect
 from .forms import PostForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import User
 
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-created_date')
-
     return re(request, 'blog/post_list.html', {'posts': posts})
 
 
@@ -28,35 +25,16 @@ def post_new(request):
             post.published_date = timezone.now()
             post.save()
             return redirect('post_list')
-
     else:
         form = PostForm()
     return render(request, 'blog/post_edit.html', {'form': form})
 
 
-def post_t(request, id):
-    post = get_object_or_404(Post, id=id)
-    if request.user == post.author:
-        return redirect("post_edit")
-    else:
-        return redirect("post_list" )
-
-
-def post_user(request, id):
-    post = get_object_or_404(Post,id=id )
-    if request.method == "POST":
-        form = PostForm(request.POST)
-        form = PostForm()
-    if request.user == post.author:
-        form = PostForm()
-        return render(request, 'blog/post_user.html', {'form': form})
-
-    else:
-        return redirect('post_list')
-
-
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    if not request.user.id == post.author.id:
+        return redirect('post_view', pk=post.pk)
+
     if request.method == "POST":
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
@@ -64,13 +42,22 @@ def post_edit(request, pk):
             post.author = request.user
             post.published_date = timezone.now()
             post.save()
-            return redirect('post_detail', pk=post.pk)
-
-
+            return redirect('post_view', pk=post.pk)
     else:
         form = PostForm(instance=post)
-
     return render(request, 'blog/post_edit.html', {'form': form})
+
+
+def post_view(request, pk):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    if request.method == "GET":
+        post = get_object_or_404(Post, pk=pk)
+        is_owner = False
+        if request.user.id == post.author.id:
+            is_owner = True
+        context = {'post': post, 'is_owner': is_owner}
+        return render(request, 'blog/post_view.html', context)
 
 
 def register_request(request):
@@ -111,13 +98,10 @@ def logout_request(request):
     return redirect("post_list")
 
 
-def post_remove(request, id):
-    post = get_object_or_404(Post, id=id)
+def post_remove(request, pk):
+    post = get_object_or_404(Post, pk=pk)
     if request.user == post.author:
-
         post.delete()
-        return redirect('post_list',id)
-
+        return redirect('post_list', )
     else:
-
-        return redirect('post_list')
+        return redirect('post_list', )
